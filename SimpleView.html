@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Income Tax Calculator</h1>
+
+<form >
+  <label for="api_target">API Target: </label>
+  <input type="text" id="api_target" name="api_target" value="https://localhost:44359/IncomeTax" size="50"><br><br>
+
+  <label for="income_total">Total Income:</label>
+  <input type="text" id="income_total" name="income_total" value="95000" size="8"><br><br>
+
+  <label for="year">Target Year:</label>
+  <input type="text" id="year" name="year" value="2020" size="6"><br><br>
+
+  <label for="retries">DB Retry Count:</label>
+  <input type="text" id="retries" name="retries" value="3" size="1"><br><br>
+</form>
+<button id="submit_button" type="button" onclick="loadDoc()">Calculate Tax</button>
+  
+<p id="status">Status: not started</p>
+<p id="income_tax">Total: </p>
+<p id="message">Message:</p>
+
+<h5>Common Issues</h5>
+<ul>
+  <li>Be sure the API Target has the correct port.</li>
+  <li>Check that both the Income Tax Api, and the Tax Bracket Api, are running.</li>
+</ul>
+
+<h5>Please Note</h5>
+
+<ul>
+  <li>This UI was slapped together by a backend developer, who was running out of time. It's not pretty, and it doesn't follow best practices, but it works.</li>
+  <li>This View does <strong>zero</strong> input validation. The API controller has those checks built in.</li>
+</ul>
+
+<script>
+function loadDoc() {
+  document.getElementById("status").innerHTML = "Status: running, please wait";
+  document.getElementById("income_tax").innerHTML = "Total: ";
+  document.getElementById("message").innerHTML = "Message:";
+  document.getElementById("submit_button").disabled = true;
+
+  var xhttp = new XMLHttpRequest();  
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) 
+    {
+      document.getElementById("submit_button").disabled = false;
+      if(this.status == 200)
+      {
+        document.getElementById("status").innerHTML = "Status: Done";
+        document.getElementById("income_tax").innerHTML = "Total: " + this.response["totalTax"];
+        document.getElementById("message").innerHTML = "Message: " + this.response["message"];
+      }
+      else
+      {
+        document.getElementById("status").innerHTML = "Status: Error";
+        document.getElementById("income_tax").innerHTML = "Total: NA";
+        document.getElementById("message").innerHTML = "Message: " + this.response["message"];
+      }
+    }
+  };
+  var api = document.getElementById("api_target").value;
+  var year = document.getElementById("year").value;
+  var income_total = document.getElementById("income_total").value;
+  var retries = document.getElementById("retries").value;
+  xhttp.open("GET", `${api}?year=${year}&income=${income_total}&retries=${retries}`, true);
+  xhttp.responseType = "json";
+  xhttp.send();
+}
+</script>
+ 
+</body>
+</html>
