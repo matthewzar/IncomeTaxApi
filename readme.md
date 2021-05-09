@@ -16,7 +16,7 @@ Setup and run the data-layer via Docker:
 
 Run the Income Tax Calculator API. Options include:
  - Running from Visual Studio.
- - <TODO> Downloading and running [this dockerised version](https://www.docker.com/).
+ - (TODO) Downloading and running [this dockerised version](https://www.docker.com/).
 
 # API Interaction
  
