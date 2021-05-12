@@ -44,6 +44,16 @@ The calculator portion of this app (the PointIncomeTaxCalculator class) was crea
  - Tests for IncomeTaxController using a mocked calculator and ITaxBracketGetter
  - Postman-driven integration tests of the Controllers and Models in action. 
 
+# To Do
+
+ - Add caching to the results of the Tax Bracket API.
+   - Requires timeout and optional extra argument that says "force update"
+ - Update the assorted injectables to be more scalable:
+   - Async queries like "CalculateTaxAsync()".
+   - Change injection logic to non-singltons (risks increased memory for speed).
+ - Fix existing TaxBracket model class so all 3 fields check for validity.
+ - Switch the missing bracket tax rate logic to a Fail-fast version (i.e. no more "tax the remainder at the highest rate").
+
 # 3rd party dependencies
 
 These dependencies have been confirmed to work in the latest build. If something breaks inexplicably be sure to check if any have auto-updated.
